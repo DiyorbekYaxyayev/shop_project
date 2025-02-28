@@ -1,0 +1,109 @@
+{% extends 'shop/base/base.html' %}
+{% load static %}
+
+{% block title %} Sam Shop {% endblock %}
+
+{% block index_content %}
+    <!-- Full-page Background Image -->
+    <style>
+        body {
+            background-image: url('{% static "shop/images/background.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+
+    <!-- Header Section -->
+    <header class="bg-dark py-5 text-white text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bolder">Sam Shop</h1>
+            <p class="lead fw-normal text-white-50">Find the best products at the best prices!</p>
+        </div>
+    </header>
+
+    <!-- Filter Section -->
+    <div class="container mt-5">
+        <h3 class="text-primary">Filter by</h3>
+        <div class="row g-2">
+            <div class="col-auto">
+                <a class="btn btn-outline-primary" href="?filter=expensive"> <i class="bi bi-arrow-up"></i> Expensive </a>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-outline-success" href="?filter=cheap"> <i class="bi bi-arrow-down"></i> Cheap </a>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-outline-warning" href="?filter=rating"> <i class="bi bi-star"></i> Rating </a>
+            </div>
+            {% if user.is_authenticated %}
+                <div class="col-auto">
+                    <a class="btn btn-outline-danger" href="{% url 'shop:product_create' %}"> <i class="bi bi-plus"></i> Add Product </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Product Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4 justify-content-center">
+                {% if page_obj %}
+                    {% for product in page_obj %}
+                        <div class="col">
+                            <div class="card h-100 shadow-lg border-0">
+                                {% if product.discount > 0 %}
+                                    <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem"> Sale </div>
+                                {% endif %}
+                                <img class="card-img-top img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">{{ product.name }}</h5>
+                                    <div class="d-flex justify-content-center text-warning mb-2">
+                                        {% for _ in "x"|rjust:product.rating %} <i class="bi bi-star-fill"></i> {% endfor %}
+                                    </div>
+                                    <div class="fs-5">
+                                        {% if product.discount > 0 %}
+                                            <span class="text-muted text-decoration-line-through">${{ product.price }}</span>
+                                        {% endif %}
+                                        <span class="text-success fw-bold">${{ product.discounted_price }}</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent border-top-0 text-center">
+                                    <a class="btn btn-outline-dark" href="{% url 'shop:product_detail' product.id %}"> View Product </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center text-muted">No products available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo;&laquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                    </li>
+                {% endif %}
+                <li class="page-item active">
+                    <span class="page-link">{{ page_obj.number }}</span>
+                </li>
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;&raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}
