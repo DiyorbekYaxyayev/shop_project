@@ -142,7 +142,8 @@ EMAIL_HOST = 'smtp.gmail.com'  # SMTP server host
 EMAIL_PORT = 587  # SMTP server port (587 for TLS, 465 for SSL)
 EMAIL_USE_TLS = True  # True for TLS, False for SSL
 EMAIL_HOST_USER = 'diyor.hapirin@gmail.com'  # SMTP server username
-EMAIL_HOST_PASSWORD = 'ybzv oboo suhm upnh'
+EMAIL_HOST_PASSWORD = 'hbpt ezpk ymav lpfs'
+
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 AUTHENTICATION_BACKENDS = [
@@ -152,5 +153,6 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '64344816682-km9fh81c30o18grc695keffsuetiolad.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
 
 LOGIN_REDIRECT_URL = '/apelsin/'
